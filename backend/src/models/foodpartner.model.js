@@ -12,6 +12,14 @@ const foodPartnerSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    contactNumber:{
+        type:String,
+        required:true
+    },
+    address:{
+        type:String,
+        required:true
     }
 })
 const foodPartnerModel=mongoose.model("foodpartner",foodPartnerSchema);
