@@ -1,7 +1,34 @@
 import React from 'react'
 import '../styles/auth.css'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
+    const navigate=useNavigate();
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        const name = e.target.name.value;
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        const address=e.target.address.value;
+        const contactNumber=e.target.contactNumber.value;
+    
+        try {
+          const res = await axios.post(
+            '/api/auth/food-partner/register',
+            { name, email, password,address,contactNumber },
+            { withCredentials: true }
+          );
+          console.log('Register response:', res.data);
+        } catch (err) {
+          console.error('Register error:', err.response?.data || err.message);
+    
+        }
+        navigate("/create-food")
+      };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -10,26 +37,28 @@ const FoodPartnerRegister = () => {
           <p>Register your restaurant to start receiving orders.</p>
         </div>
 
-        <form>
+        <form onSubmit={handleSubmit 
+}>
           <div className="form-row">
             <div className="form-group">
               <label>Restaurant Name</label>
-              <input type="text" placeholder="Name of restaurant" />
+              <input name="name" type="text" placeholder="Name of restaurant" />
             </div>
 
             <div className="form-group">
               <label>Contact Email</label>
-              <input type="email" placeholder="contact@restaurant.com" />
+              <input name="email" type="email" placeholder="contact@restaurant.com" />
             </div>
 
             <div className="form-group">
               <label>Contact Number</label>
-              <input type="tel" placeholder="+1 555 555 5555" />
+              <input name="contactNumber" type="tel" placeholder="+1 555 555 5555" />
             </div>
 
             <div className="form-group">
               <label>Address</label>
               <textarea
+                name="address"
                 placeholder="Street, city, state, zip"
                 rows="3"
                 style={{
@@ -46,12 +75,12 @@ const FoodPartnerRegister = () => {
 
             <div className="form-group">
               <label>Password</label>
-              <input type="password" placeholder="Create password" />
+              <input name="password" type="password" placeholder="Create password" />
             </div>
           </div>
 
           <div className="actions">
-            <button type="button" className="btn btn-primary">Register</button>
+            <button type="submit" className="btn btn-primary">Register</button>
             <a className="muted-link" href="/food-partner/login">Already have an account?</a>
           </div>
 

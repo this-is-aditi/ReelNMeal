@@ -24,6 +24,8 @@ async function registerUser(req,res) {
         email,
         password:hashedPassword
     })
+    //console.log();
+    
     const token=jwt.sign({
         id:user._id,
     },process.env.JWT_SECRET)
@@ -37,6 +39,7 @@ async function registerUser(req,res) {
             fullName:user.fullName
         }
     })
+    
 }
 async function loginUser(req,res){
     const {email, password}=req.body;
@@ -44,7 +47,7 @@ async function loginUser(req,res){
         email
     })
     if(!user){
-        res.status(400).json({
+      return  res.status(400).json({
             message:"Invalid email or password"
         })
     }
@@ -104,18 +107,21 @@ async function registerFoodPartner(req,res) {
         foodPartner:{
             _id:foodPartner._id,
             email:foodPartner.email,
-            fullName:foodPartner.name
+            name:foodPartner.name,
+            address:foodPartner.address,
+            contactNumber:foodPartner.contactNumber
+
         }
     })
 }
 
 async function loginFoodPartner(req,res){
     const {email, password}=req.body;
-    const foodPartner=await userModel.findOne({
+    const foodPartner=await foodPartnerModel.findOne({
         email
     })
     if(!foodPartner){
-        res.status(400).json({
+       return res.status(400).json({
             message:"Invalid email or password"
         })
     }

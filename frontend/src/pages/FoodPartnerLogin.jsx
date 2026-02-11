@@ -1,7 +1,33 @@
 import React from 'react'
 import '../styles/auth.css'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
+    const navigate=useNavigate();
+    
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+        
+        try {
+          const res = await axios.post(
+            '/api/auth/food-partner/login',
+            {  email, password },
+            { withCredentials: true }
+          );
+          console.log('Register response:', res.data);
+        } catch (err) {
+          
+           console.error(err.response?.data || err.message);
+
+        }
+        navigate("/create-food")
+      };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -10,21 +36,21 @@ const FoodPartnerLogin = () => {
           <p>Sign in to manage your restaurant and orders.</p>
         </div>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group">
               <label>Email</label>
-              <input type="email" placeholder="contact@restaurant.com" />
+              <input name="email" type="email" placeholder="contact@restaurant.com" />
             </div>
 
             <div className="form-group">
               <label>Password</label>
-              <input type="password" placeholder="Your password" />
+              <input name="password" type="password" placeholder="Your password" />
             </div>
           </div>
 
           <div className="actions">
-            <button type="button" className="btn btn-primary">Sign in</button>
+            <button type="submit" className="btn btn-primary">Sign in</button>
             <a className="muted-link" href="/food-partner/register">Create an account</a>
           </div>
           <div className="auth-switch">

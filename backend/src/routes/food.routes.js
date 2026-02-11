@@ -18,11 +18,14 @@ router.post("/",
      upload.single("video") ,
      foodController.createFood);
 
-     /*GET/api/food/[protected]*/
+     /*GET/api/food (protected) */
      router.get("/",
        authUserMiddleware,
      foodController.getFoodItems
      )
+
+    // Public feed (no auth) - useful for public browsing / dev
+    router.get('/public', foodController.getFoodItems)
 
 
 export default router;
